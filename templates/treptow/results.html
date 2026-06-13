@@ -125,7 +125,7 @@
     {% for result in results %}
         {% set index = loop.index %}
         {% if result['template'] %}
-            {% include get_result_template('simple', result['template']) %}
+            {% include get_result_template('treptow', result['template']) %}
         {% else %}
             {% include 'treptow/result_templates/default.html' %}
         {% endif %}

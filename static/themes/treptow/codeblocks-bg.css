@@ -8,6 +8,7 @@ body {
     radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.055), transparent 58%),
     radial-gradient(ellipse at 50% 100%, rgba(214, 255, 60, 0.045), transparent 60%),
     #000;
+  color: #e8e8e6;
 }
 
 #codeblocks-bg {
@@ -31,7 +32,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 1;
   pointer-events: none;
   background:
     radial-gradient(ellipse at 50% 42%, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.72) 72%),
@@ -42,7 +43,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 7;
+  z-index: 5;
   pointer-events: none;
   background:
     radial-gradient(circle at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.28) 62%, rgba(0, 0, 0, 0.76) 100%);
@@ -50,7 +51,40 @@ body {
 
 body > *:not(#codeblocks-bg) {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+}
+
+body > main,
+body > footer,
+#linkto_preferences {
+  position: relative;
+  z-index: 10;
+}
+
+#search_wrapper,
+.search_box,
+#results,
+#sidebar > *,
+.result,
+.result-default,
+.infobox,
+#answers,
+#suggestions,
+#search_url,
+#apis {
+  background: rgba(8, 10, 14, 0.72);
+}
+
+#q,
+input,
+select,
+button,
+textarea {
+  color: #e8e8e6;
+}
+
+#q {
+  background: rgba(0, 0, 0, 0.62);
 }
 
 #codeblocks-bg .code-col {
@@ -70,27 +104,27 @@ body > *:not(#codeblocks-bg) {
   animation: codeblocks-breathe 5.5s ease-in-out infinite;
   will-change: top, opacity;
   transform-origin: top left;
-  z-index: 1;
+  z-index: 3;
   user-select: none;
 }
 
 #codeblocks-bg .code-col.depth-far {
   transform: scale(0.52);
   opacity: 0.24;
-  z-index: 0;
+  z-index: 2;
   filter: blur(1px);
 }
 
 #codeblocks-bg .code-col.depth-mid {
   transform: scale(0.78);
   opacity: 0.44;
-  z-index: 1;
+  z-index: 3;
 }
 
 #codeblocks-bg .code-col.depth-close {
   transform: scale(1.05);
   opacity: 0.76;
-  z-index: 2;
+  z-index: 4;
   text-shadow: 0 0 6px currentColor;
 }
 
@@ -102,7 +136,7 @@ body > *:not(#codeblocks-bg) {
 
 #codeblocks-bg .code-col.bright {
   color: rgba(214, 255, 60, 0.82);
-  text-shadow: 0 0 12px rgba(214, 255, 60,  text-shadow: 0 0 12px rgba(214, 255, 60, 0.52);
+  text-shadow: 0 0 12px rgba(214, 255, 60, 0.52);
 }
 
 #codeblocks-bg .code-col.cyan {
