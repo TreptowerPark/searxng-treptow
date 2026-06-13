@@ -99,7 +99,8 @@ textarea {
   line-height: var(--lh, 1.35);
   opacity: var(--op, 0.72);
   color: rgba(214, 255, 60, 0.72);
-  text-shadow: 0 0 8px rgba(214, 255, 60, 0.42);
+  text-shadow: 0 0 10px rgba(214, 255, 60, 0.56);
+  font-weight: 600;
   animation: codeblocks-breathe 5.5s ease-in-out infinite;
   will-change: top, opacity;
   transform-origin: top left;
@@ -108,23 +109,23 @@ textarea {
 }
 
 #codeblocks-bg .code-col.depth-far {
-  transform: scale(0.52);
-  opacity: 0.36;
+  transform: scale(0.58);
+  opacity: 0.48;
   z-index: 2;
-  filter: blur(1px);
+  filter: blur(0.6px);
 }
 
 #codeblocks-bg .code-col.depth-mid {
-  transform: scale(0.78);
-  opacity: 0.64;
+  transform: scale(0.86);
+  opacity: 0.76;
   z-index: 3;
 }
 
 #codeblocks-bg .code-col.depth-close {
-  transform: scale(1.05);
-  opacity: 0.92;
+  transform: scale(1.12);
+  opacity: 1;
   z-index: 4;
-  text-shadow: 0 0 6px currentColor;
+  text-shadow: 0 0 10px currentColor;
 }
 
 #codeblocks-bg .code-col.drift-vert {
@@ -185,11 +186,11 @@ textarea {
 }
 
 @keyframes codeblocks-breathe {
-  0% { opacity: 0; }
-  8% { opacity: calc(var(--op, 0.72) * 0.82); }
+  0% { opacity: calc(var(--op, 0.72) * 0.62); }
+  8% { opacity: calc(var(--op, 0.72) * 0.88); }
   50% { opacity: var(--op, 0.72); }
-  92% { opacity: calc(var(--op, 0.72) * 0.82); }
-  100% { opacity: 0; }
+  92% { opacity: calc(var(--op, 0.72) * 0.88); }
+  100% { opacity: calc(var(--op, 0.72) * 0.62); }
 }
 
 @keyframes codeblocks-type-fade-out {
@@ -210,7 +211,12 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #codeblocks-bg {
-    display: none;
+  #codeblocks-bg .code-col,
+  #codeblocks-bg .typing-cursor {
+    animation: none !important;
+  }
+
+  #codeblocks-bg .code-col {
+    opacity: 0.9 !important;
   }
 }

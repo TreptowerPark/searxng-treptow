@@ -9,7 +9,6 @@
     reducedMotion: reducedMotion.matches,
     readyState: document.readyState
   });
-  if (reducedMotion.matches) return;
 
   const timers = new Set();
 
@@ -125,9 +124,9 @@
 
   function desiredColumnCount() {
     const width = window.innerWidth || 1200;
-    if (width < 520) return 10 + Math.floor(Math.random() * 5);
-    if (width < 900) return 16 + Math.floor(Math.random() * 7);
-    return 30 + Math.floor(Math.random() * 12);
+    if (width < 520) return 14 + Math.floor(Math.random() * 6);
+    if (width < 900) return 24 + Math.floor(Math.random() * 8);
+    return 44 + Math.floor(Math.random() * 14);
   }
 
   function spawnColumn(host, delay, forceVisible = false) {
@@ -141,7 +140,7 @@
     const el = document.createElement("pre");
     const isBright = Math.random() < 0.24;
     const colorRoll = Math.random();
-    const hasDrift = Math.random() < 0.68;
+    const hasDrift = !forceVisible && Math.random() < 0.68;
     const depthRoll = Math.random();
     const depth = depthRoll < 0.28 ? " depth-far" : depthRoll < 0.64 ? " depth-mid" : " depth-close";
     const color =
@@ -162,8 +161,8 @@
       el.style.setProperty("--top", rand(3, 78).toFixed(1) + "%");
     }
 
-    el.style.setProperty("--op", rand(0.62, 0.98).toFixed(2));
-    el.style.setProperty("--fs", rand(9.5, 15.5).toFixed(1) + "px");
+    el.style.setProperty("--op", rand(0.74, 1.00).toFixed(2));
+    el.style.setProperty("--fs", rand(11, 17).toFixed(1) + "px");
     el.style.setProperty("--lh", rand(1.15, 1.45).toFixed(2));
 
     const textNode = document.createTextNode("");
@@ -193,6 +192,14 @@
     function chooseNextLine() {
       currentLine = pickLine();
       lineIdx = 0;
+    }
+
+    if (reducedMotion.matches) {
+      const lines = [];
+      for (let i = 0; i < maxLines; i += 1) lines.push(pickLine());
+      textNode.textContent = lines.join("\n");
+      cursor.remove();
+      return;
     }
 
     function typeForward() {
@@ -287,7 +294,7 @@
     console.info("[treptow-codeblocks] start", { count });
 
     for (let i = 0; i < count; i += 1) {
-      spawnColumn(host, i < 6 ? i * 80 : i * rand(90, 220), i < 6);
+      spawnColumn(host, i < 14 ? i * 45 : i * rand(55, 140), i < 14);
     }
   }
 
