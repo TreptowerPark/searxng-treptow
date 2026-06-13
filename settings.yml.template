@@ -1,0 +1,25 @@
+# SearXNG settings template for treptow.uber.space
+# Copy to settings.yml and fill in secret_key before deploying.
+# DO NOT commit settings.yml with secrets!
+
+use_default_settings: true
+
+general:
+    instance_name : "treptow-search"
+    enable_stats: False
+
+server:
+    port : 8888
+    bind_address : "0.0.0.0"
+    secret_key : "CHANGE_ME_TO_RANDOM_HEX"   # openssl rand -hex 16
+    base_url : "https://treptow.uber.space/"
+    http_protocol_version : "1.0"
+    default_http_headers:
+        X-Content-Type-Options : nosniff
+        X-Robots-Tag : noindex, nofollow
+        Referrer-Policy : no-referrer
+
+ui:
+    default_theme : treptow
+    theme_args:
+        simple_style : black
