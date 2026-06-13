@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/searx.min.css') }}" type="text/css" media="screen" />
   {% endif %}
   {% block styles %}{% endblock %}
-<link rel="stylesheet" href="{{ url_for('static', filename='codeblocks-bg.css') }}?v=20260614a" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='codeblocks-bg-lite.css') }}?v=20260614lite1" type="text/css" />
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searx.head.min.js') }}"
           data-method="{{ method or 'POST' }}"
@@ -62,6 +62,6 @@
   <!--[if gte IE 9]>-->
   <script src="{{ url_for('static', filename='js/searx.min.js') }}"></script>
   <!--<![endif]-->
-<script defer src="{{ url_for('static', filename='codeblocks-bg.js') }}?v=20260614a"></script>
+<script defer src="{{ url_for('static', filename='codeblocks-bg-lite.js') }}?v=20260614lite1"></script>
 </body>
 </html>
