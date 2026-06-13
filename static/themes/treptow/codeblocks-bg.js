@@ -5,6 +5,10 @@
   window.__treptowCodeblocksStarted = true;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  console.info("[treptow-codeblocks] script loaded", {
+    reducedMotion: reducedMotion.matches,
+    readyState: document.readyState
+  });
   if (reducedMotion.matches) return;
 
   const timers = new Set();
@@ -121,16 +125,16 @@
 
   function desiredColumnCount() {
     const width = window.innerWidth || 1200;
-    if (width < 520) return 8 + Math.floor(Math.random() * 5);
-    if (width < 900) return 12 + Math.floor(Math.random() * 6);
-    return 20 + Math.floor(Math.random() * 9);
+    if (width < 520) return 10 + Math.floor(Math.random() * 5);
+    if (width < 900) return 16 + Math.floor(Math.random() * 7);
+    return 30 + Math.floor(Math.random() * 12);
   }
 
-  function spawnColumn(host, delay) {
+  function spawnColumn(host, delay, forceVisible = false) {
     if (!host || !host.isConnected) return;
 
     if (document.hidden) {
-      later(() => spawnColumn(host, rand(500, 1800)), 1800);
+      later(() => spawnColumn(host, rand(500, 1800), forceVisible), 1800);
       return;
     }
 
@@ -147,17 +151,19 @@
       "";
 
     el.className = "code-col" + depth + (hasDrift ? " drift-vert" : "") + color + (isBright ? " bright" : "");
-    el.style.setProperty("--left", rand(-3, 96).toFixed(1) + "%");
+    el.style.setProperty("--left", rand(forceVisible ? 5 : -3, forceVisible ? 88 : 96).toFixed(1) + "%");
 
-    if (hasDrift) {
+    if (forceVisible) {
+      el.style.setProperty("--top", rand(8, 68).toFixed(1) + "%");
+    } else if (hasDrift) {
       el.style.setProperty("--top", rand(-36, 24).toFixed(1) + "%");
       el.style.setProperty("--drift-dur", Math.max(38, gauss(78, 26)).toFixed(1) + "s");
     } else {
       el.style.setProperty("--top", rand(3, 78).toFixed(1) + "%");
     }
 
-    el.style.setProperty("--op", rand(0.46, 0.82).toFixed(2));
-    el.style.setProperty("--fs", rand(8.5, 13.5).toFixed(1) + "px");
+    el.style.setProperty("--op", rand(0.62, 0.98).toFixed(2));
+    el.style.setProperty("--fs", rand(9.5, 15.5).toFixed(1) + "px");
     el.style.setProperty("--lh", rand(1.15, 1.45).toFixed(2));
 
     const textNode = document.createTextNode("");
@@ -182,7 +188,7 @@
     let lineIdx = 0;
     let linesDone = 0;
     const maxLines = 6 + Math.floor(Math.random() * 13);
-    const baseSpeed = rand(70, 175);
+    const baseSpeed = rand(35, 95);
 
     function chooseNextLine() {
       currentLine = pickLine();
@@ -275,10 +281,13 @@
   function start() {
     const host = ensureHost();
     host.textContent = "";
+    host.dataset.codeblocksReady = "true";
 
     const count = desiredColumnCount();
+    console.info("[treptow-codeblocks] start", { count });
+
     for (let i = 0; i < count; i += 1) {
-      spawnColumn(host, i * rand(120, 320));
+      spawnColumn(host, i < 6 ? i * 80 : i * rand(90, 220), i < 6);
     }
   }
 

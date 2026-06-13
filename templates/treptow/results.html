@@ -22,7 +22,7 @@
 <div id="results" class="{{ only_template }}">
     {% if answers -%}
     <div id="answers"><h4 class="title">{{ _('Answers') }} : </h4>
-        {%- for answer in answers -%}
+        {%- for answer in answers.values() -%}
         <div class="answer">
               {% if answer.url %}
                 <a href="{{ answer.url }}">{{ answer.answer }}</a>

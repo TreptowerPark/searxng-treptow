@@ -1,38 +1,41 @@
 <!DOCTYPE html>
-<html class="no-js" lang="{{ locale_rfc5646 }}" {% if rtl %} dir="rtl"{% endif %}>
+<html class="no-js" lang="en" {% if rtl %} dir="rtl"{% endif %}>
 <head>
-  <meta charset="UTF-8">
-  <meta name="endpoint" content="{{ endpoint }}">
-  <meta name="description" content="treptow — a privacy-respecting, hackable metasearch engine">
-  <meta name="keywords" content="searxng, search, search engine, metasearch, meta search, treptow">
-  <meta name="generator" content="searxng/{{ searxng_version }}">
+  <meta charset="UTF-8" />
+  <meta name="description" content="searx — a privacy-respecting, hackable metasearch engine">
+  <meta name="keywords" content="searx, search, search engine, metasearch, meta search">
+  <meta name="generator" content="searx/{{ searx_version }}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noarchive">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
   <title>{% block title %}{% endblock %}{{ instance_name }}</title>
-  <script type="module" src="{{ url_for('static', filename='themes/simple/sxng-core.min.js') }}" client_settings="{{ client_settings }}"></script>
   {% block meta %}{% endblock %}
   {% if rtl %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/simple/sxng-rtl.min.css') }}" type="text/css" media="screen">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/searx-rtl.min.css') }}" type="text/css" media="screen" />
   {% else %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/simple/sxng-ltr.min.css') }}" type="text/css" media="screen">
-  {% endif %}
-  {% if get_setting('server.limiter') or get_setting('server.public_instance') %}
-  <link rel="stylesheet" href="{{ url_for('client_token', token=link_token) }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/searx.min.css') }}" type="text/css" media="screen" />
   {% endif %}
   {% block styles %}{% endblock %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/treptow/codeblocks-bg.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='codeblocks-bg.css') }}?v=20260613b" type="text/css" />
+  <!--[if gte IE 9]>-->
+  <script src="{{ url_for('static', filename='js/searx.head.min.js') }}"
+          data-method="{{ method or 'POST' }}"
+          data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
+          data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
+          data-infinite-scroll="{{ 'true' if 'plugins/js/infinite_scroll.js' in scripts else 'false' }}"
+          data-static-path="{{ url_for('static', filename='themes/treptow') }}/"
+          data-translations="{{ translations }}"></script>
+  <!--<![endif]-->
   {% block head %}
-  <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}">
+  <link title="{{ instance_name }}" type="application/opensearchdescription+xml" rel="search" href="{{ opensearch_url }}"/>
   {% endblock %}
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" sizes="any">
-  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
-  <link rel="manifest" href="{{ url_for('manifest') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" />
 </head>
-<body class="{{ endpoint }}_endpoint">
+<body class="{{ endpoint }}_endpoint" >
   <div id="codeblocks-bg" aria-hidden="true"></div>
-  <main id="main_{{ self._TemplateReference__context.name|replace("treptow/", "")|replace(".html", "") }}">
+  <main id="main_{{  self._TemplateReference__context.name|replace("treptow/", "")|replace(".html", "") }}">
     {% if errors %}
         <div class="dialog-error" role="alert">
             <a href="#" class="close" aria-label="close" title="close">×</a>
@@ -44,32 +47,21 @@
         </div>
     {% endif %}
 
-    <nav id="links_on_top">
-      {%- block linkto_preferences -%}
-        {%- if request.args.get('preferences') -%}
-          <a href="{{ url_for('preferences') }}?preferences={{ request.args.get('preferences') }}&preferences_preview_only=true" class="link_on_top_preferences">{{ _('Preferences') }}</a>
-        {%- else -%}
-          <a href="{{ url_for('preferences') }}" class="link_on_top_preferences">{{ _('Preferences') }}</a>
-        {%- endif -%}
-      {%- endblock -%}
-    </nav>
-
     {% block content %}
     {% endblock %}
   </main>
   <footer>
     <p>
-    {{ _('Powered by') }} <a href="{{ url_for('info', pagename='about') }}">SearXNG</a> - {{ searxng_version }} — {{ _('a privacy-respecting, open metasearch engine') }}<br>
-        <a href="{{ searxng_git_url }}">{{ _('Source code') }}</a>
-        | <a href="{{ get_setting('brand.issue_url') }}">{{ _('Issue tracker') }}</a>
-        {% if get_setting('brand.public_instances') %}
-        | <a href="{{ get_setting('brand.public_instances') }}">{{ _('Public instances') }}</a>
-        {% endif %}
-        {% if get_setting('general.contact_url') %}
-        | <a href="{{ get_setting('general.contact_url') }}">{{ _('Contact instance maintainer') }}</a>
-        {% endif %}
+    {{ _('Powered by') }} <a href="{{ url_for('about') }}">searx</a> - {{ searx_version }} — {{ _('a privacy-respecting, hackable metasearch engine') }}<br/>
+        <a href="{{ brand.GIT_URL }}">{{ _('Source code') }}</a> |
+        <a href="{{ brand.ISSUE_URL }}">{{ _('Issue tracker') }}</a> |
+        <a href="{{ brand.PUBLIC_INSTANCES }}">{{ _('Public instances') }}</a>{% if brand.CONTACT_URL %} |
+        <a href="{{ brand.CONTACT_URL }}">{{ _('Contact instance maintainer') }}</a>{% endif %}
     </p>
   </footer>
-  <script defer src="{{ url_for('static', filename='themes/treptow/codeblocks-bg.js') }}"></script>
+  <!--[if gte IE 9]>-->
+  <script src="{{ url_for('static', filename='js/searx.min.js') }}"></script>
+  <!--<![endif]-->
+<script defer src="{{ url_for('static', filename='codeblocks-bg.js') }}?v=20260613b"></script>
 </body>
 </html>
