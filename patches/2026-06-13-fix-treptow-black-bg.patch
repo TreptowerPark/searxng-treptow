@@ -1,0 +1,174 @@
+diff --git a/templates/treptow/base.html b/templates/treptow/base.html
+index 827bc04..0000000 100644
+--- a/templates/treptow/base.html
++++ b/templates/treptow/base.html
+@@ -27,7 +27,7 @@
+            data-autocompleter="{% if autocomplete %}true{% else %}false{% endif %}"
+            data-search-on-category-select="{{ 'true' if 'plugins/js/search_on_category_select.js' in scripts else 'false'}}"
+            data-infinite-scroll="{{ 'true' if 'plugins/js/infinite_scroll.js' in scripts else 'false' }}"
+-           data-static-path="{{ url_for('static', filename='themes/simple') }}/"
++           data-static-path="{{ url_for('static', filename='themes/treptow') }}/"
+            data-translations="{{ translations }}"></script>
+    <!--<![endif]-->
+    {% block head %}
+diff --git a/static/themes/treptow/codeblocks-bg.css b/static/themes/treptow/codeblocks-bg.css
+index 5b0f322..0000000 100644
+--- a/static/themes/treptow/codeblocks-bg.css
++++ b/static/themes/treptow/codeblocks-bg.css
+@@ -10,6 +10,7 @@ body {
+     radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.055), transparent 58%),
+     radial-gradient(ellipse at 50% 100%, rgba(214, 255, 60, 0.045), transparent 60%),
+     #000;
++  color: #e8e8e6;
+ }
+ 
+ #codeblocks-bg {
+@@ -33,7 +34,7 @@ body {
+   content: "";
+   position: absolute;
+   inset: 0;
+-  z-index: 6;
++  z-index: 1;
+   pointer-events: none;
+   background:
+     radial-gradient(ellipse at 50% 42%, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.72) 72%),
+@@ -44,7 +45,7 @@ body {
+   content: "";
+   position: absolute;
+   inset: 0;
+-  z-index: 7;
++  z-index: 5;
+   pointer-events: none;
+   background:
+     radial-gradient(circle at 50% 30%, transparent 0%, rgba(0, 0, 0, 0.28) 62%, rgba(0, 0, 0, 0.76) 100%);
+@@ -52,7 +53,36 @@ body {
+ 
+ body > *:not(#codeblocks-bg) {
+   position: relative;
+-  z-index: 1;
++  z-index: 10;
++}
++
++body > main,
++body > footer,
++#linkto_preferences {
++  position: relative;
++  z-index: 10;
++}
++
++#search_wrapper,
++.search_box,
++#results,
++#sidebar > *,
++.result,
++.result-default,
++.infobox,
++#answers,
++#suggestions,
++#search_url,
++#apis {
++  background: rgba(8, 10, 14, 0.72);
++}
++
++#q,
++input,
++select,
++button,
++textarea {
++  color: #e8e8e6;
++}
++
++#q {
++  background: rgba(0, 0, 0, 0.62);
+ }
+ 
+ #codeblocks-bg .code-col {
+@@ -72,24 +102,24 @@ body > *:not(#codeblocks-bg) {
+   will-change: top, opacity;
+   transform-origin: top left;
+-  z-index: 1;
++  z-index: 3;
+   user-select: none;
+ }
+ 
+ #codeblocks-bg .code-col.depth-far {
+   transform: scale(0.52);
+   opacity: 0.24;
+-  z-index: 0;
++  z-index: 2;
+   filter: blur(1px);
+ }
+ 
+ #codeblocks-bg .code-col.depth-mid {
+   transform: scale(0.78);
+   opacity: 0.44;
+-  z-index: 1;
++  z-index: 3;
+ }
+ 
+ #codeblocks-bg .code-col.depth-close {
+   transform: scale(1.05);
+   opacity: 0.76;
+-  z-index: 2;
++  z-index: 4;
+   text-shadow: 0 0 6px currentColor;
+ }
+@@ -104,7 +134,7 @@ body > *:not(#codeblocks-bg) {
+ 
+ #codeblocks-bg .code-col.bright {
+   color: rgba(214, 255, 60, 0.82);
+-  text-shadow: 0 0 12px rgba(214, 255, 60,  text-shadow: 0 0 12px rgba(214, 255, 60, 0.52);
++  text-shadow: 0 0 12px rgba(214, 255, 60, 0.52);
+ }
+ 
+ #codeblocks-bg .code-col.cyan {
+diff --git a/templates/treptow/results.html b/templates/treptow/results.html
+index e4a2697..0000000 100644
+--- a/templates/treptow/results.html
++++ b/templates/treptow/results.html
+@@ -127,7 +127,7 @@
+     {% for result in results %}
+         {% set index = loop.index %}
+         {% if result['template'] %}
+-            {% include get_result_template('simple', result['template']) %}
++            {% include get_result_template('treptow', result['template']) %}
+         {% else %}
+             {% include 'treptow/result_templates/default.html' %}
+         {% endif %}
+diff --git a/deploy-treptow-theme.sh b/deploy-treptow-theme.sh
+index f1057c0..0000000 100644
+--- a/deploy-treptow-theme.sh
++++ b/deploy-treptow-theme.sh
+@@ -8,6 +8,7 @@ set -euo pipefail
+ 
+ SEARX_SRC="${SEARX_SRC:-$HOME/opt/searx/searxng-src}"
+ CUSTOM_DIR="${CUSTOM_DIR:-$HOME/custom-theme/treptow}"
++SETTINGS="${SETTINGS:-$HOME/etc/searx/settings.yml}"
+ 
+ cd "$SEARX_SRC"
+ 
+@@ -16,18 +17,21 @@ rsync -a --delete "$CUSTOM_DIR/templates/treptow/" "searx/templates/treptow/"
+ rsync -a --delete "$CUSTOM_DIR/static/themes/treptow/" "searx/static/themes/treptow/"
+ 
+ # Ensure settings use treptow theme (idempotent edit)
+-SETTINGS="$HOME/etc/searx/settings.yml"
+-python3 - <<"PY"
++python3 - "$SETTINGS" <<'PY'
+ from pathlib import Path
+-import re, sys
++import re
++import sys
++
+ p = Path(sys.argv[1])
+ text = p.read_text()
+-text = re.sub(r"default_theme\s*:\s*\\w+", "default_theme : treptow", text)
++text = re.sub(r"default_theme\s*:\s*\w+", "default_theme : treptow", text)
+ if "simple_style" not in text:
+     text = text.replace("theme_args :", "theme_args :\n        simple_style : black")
+ else:
+     text = re.sub(r"simple_style\s*:\s*[^\n]+", "simple_style : black", text)
+ p.write_text(text)
+-PY "$SETTINGS"
++PY
+ 
+ echo "treptow theme deployed. Restart SearXNG to activate."
