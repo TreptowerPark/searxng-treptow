@@ -8,19 +8,18 @@ Custom SearXNG theme and configuration for [treptow.uber.space](https://treptow.
 |---|---|
 | `templates/treptow/` | Jinja2 templates (forked from upstream `simple`, references updated to `treptow/`) |
 | `static/themes/treptow/` | Static assets: CSS, JS, fonts, images, leaflet |
-| `static/themes/treptow/codeblocks-bg.css` | Animated codeblock background styling |
-| `static/themes/treptow/codeblocks-bg.js` | Animated codeblock background behaviour |
+| `static/themes/treptow/home.css` | Homepage visual system and responsive layout |
 | `deploy-treptow-theme.sh` | Deploy/re-apply theme into a SearXNG source install |
 | `settings.yml.template` | Settings template (copy to `settings.yml`, fill in `secret_key`) |
 
-## Animated codeblock background
+## Homepage visual system
 
-Inspired by [TreptowerPark/aviationcenter-landing](https://github.com/TreptowerPark/aviationcenter-landing).
+The homepage uses a restrained dark utility layout with a clear search-first hierarchy. The decorative code background was removed so the search controls, category filters, and footer remain readable at every viewport size.
 
-- Decorative only: `aria-hidden="true"`, `pointer-events: none`
-- No network calls, no query access, no storage
-- Respects `prefers-reduced-motion: reduce` (background hidden)
-- CSS transform animation (no layout properties)
+- Scoped to the homepage through `static/themes/treptow/home.css`
+- Uses system typography and semantic focus states
+- Keeps the existing SearXNG search and category controls intact
+- Responsive layout for desktop and small screens
 
 ## Installation
 
@@ -80,14 +79,13 @@ supervisorctl restart searx
 ```
 searxng-treptow/
 ├── templates/treptow/          # Jinja2 templates
-│   ├── base.html               # Main layout (includes codeblocks-bg hooks)
+│   ├── base.html               # Main layout and shared navigation
 │   ├── index.html              # Homepage
 │   ├── results.html            # Search results
 │   ├── preferences.html        # User preferences
 │   └── ...
 ├── static/themes/treptow/      # Static assets
-│   ├── codeblocks-bg.css       # Background styling
-│   ├── codeblocks-bg.js        # Background animation
+│   ├── home.css                # Homepage visual overrides
 │   ├── css/                    # Compiled CSS
 │   ├── js/                     # Compiled JS
 │   ├── less/                   # LESS source
@@ -109,4 +107,4 @@ searxng-treptow/
 ## License
 
 Theme templates are derived from [searxng/searxng](https://github.com/searxng/searxng) (AGPL-3.0).
-Custom additions (codeblocks-bg, deploy script) are MIT.
+Custom additions (homepage visual system, deploy script) are MIT.
