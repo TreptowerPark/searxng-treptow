@@ -36,6 +36,7 @@ body.index_endpoint > main#main_index {
 }
 
 body.index_endpoint #linkto_preferences {
+  display: block;
   position: absolute;
   top: 1.25rem;
   right: 1.5rem;
@@ -241,6 +242,7 @@ body.index_endpoint #categories_container {
 
 body.index_endpoint .category {
   display: block;
+  width: auto;
   margin: 0;
   padding: 0;
 }
