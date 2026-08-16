@@ -21,6 +21,10 @@ The homepage uses a restrained dark utility layout with a clear search-first hie
 - Keeps the existing SearXNG search and category controls intact
 - Responsive layout for desktop and small screens
 
+## Compatibility
+
+The deployed instance currently runs SearXNG 1.1.x. Theme template changes must retain that version's template API until the application itself is upgraded.
+
 ## Installation
 
 ### Fresh install

@@ -1,11 +1,11 @@
 {% extends "treptow/base.html" %}
+{% from 'treptow/macros.html' import icon %}
 {% block meta %}
 	<link rel="preload" href="{{ url_for('static', filename='img/searx.png') }}" as="image" />
 {% endblock %}
 {% block styles %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='themes/treptow/home.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" type="text/css">
 {% endblock %}
-{% block linkto_preferences %}{% endblock %}
 {% block content %}
 <nav id="linkto_preferences"><a href="{{ url_for('preferences') }}">{{ _('Preferences') }}</a></nav>
 <div class="index">
